@@ -185,8 +185,6 @@ int main(int argc, char *argv[]) {
 
         if (n == 1) {
 
-
-
             if (c == 27) {
                 n = read(STDIN_FILENO, &c, 1);
                 if (c == '[') {
@@ -333,8 +331,7 @@ int main(int argc, char *argv[]) {
                         
                         
                         
-                        cursor.y--;
-                        
+                        cursor.y--;   
                     }
                 }
 
@@ -360,7 +357,7 @@ int main(int argc, char *argv[]) {
 
             else if (c == 15) {
 
-                int file = open("test.txt", O_WRONLY | O_TRUNC);
+                int file = open(file_name, O_WRONLY | O_TRUNC);
 
                 for (size_t i = 0; i < doc.line_count; ++i) {
                     char p = '\n';
@@ -368,11 +365,9 @@ int main(int argc, char *argv[]) {
                     if (i + 1 != doc.line_count)
                         write(file, &p, 1);
                 }
-
                 close(file);
             }
         }   
-
         print(doc, cursor, c);
     }
 
