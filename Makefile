@@ -6,7 +6,7 @@ SRC_DIR = src
 INC_DIR = include
 BUILD_DIR = build
 
-CFLAGS = -Wall -Wextra -Werror -std=c11 -D_DEFAULT_SOURCE -g
+CFLAGS = -Wall -Wextra -Werror -std=c11 -D_DEFAULT_SOURCE -g -Iinclude
 LDFLAGS =
 LDLIBS =
 
