@@ -1,6 +1,8 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
+#include <stddef.h>
+
 typedef struct {
     char* line;
     size_t len;

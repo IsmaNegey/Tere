@@ -145,7 +145,9 @@ void manageCursor(Document doc, Cursor* cursor) {
             else if (symb == 'C' && cursor->x < doc.lines[cursor->y].len) {
                 cursor->x++;
             }
+            else if (symb == 'D' && cursor->x > 0) {
                 cursor->x--;
+            }
         } 
     }
 }
