@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h> 
 
 #include "edit.h"
 #include "utility.h"
@@ -123,4 +124,28 @@ void deleteButton(Document* doc, Cursor* cursor) {
     }
     printf("\x1b[%zu;1H", doc->line_count + 1);
         printf("\x1b[K");
+}
+
+void manageCursor(Document doc, Cursor* cursor) {
+    char symb;
+    size_t n = read(STDIN_FILENO, &symb, 1);
+    if (n == 1) {
+        if (symb == '[') {
+            n = read(STDIN_FILENO, &symb, 1);
+            if (symb == 'A' && cursor->y > 0) {
+                if (doc.lines[cursor->y - 1].len == 0 || doc.lines[cursor->y - 1].len - 1 < cursor->x )
+                    cursor->x = doc.lines[cursor->y - 1].len;
+                cursor->y--;
+            }
+            else if (symb == 'B' && cursor->y < doc.line_count - 1) {
+                if (doc.lines[cursor->y + 1].len == 0 || doc.lines[cursor->y + 1].len - 1 < cursor->x)
+                    cursor->x = doc.lines[cursor->y + 1].len;
+                cursor->y++;
+            }
+            else if (symb == 'C' && cursor->x < doc.lines[cursor->y].len) {
+                cursor->x++;
+            }
+                cursor->x--;
+        } 
+    }
 }

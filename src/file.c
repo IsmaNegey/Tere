@@ -1,14 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-
-#include <stdio.h>
-#include <stdlib.h>
 #include <fcntl.h>
-#include <unistd.h>
-#include <stddef.h>
-#include <string.h>
-#include <termios.h>
 
 #include "file.h"
 #include "utility.h"
@@ -96,3 +89,4 @@ void writeFile(char* file_name, Document* doc) {
     }
     close(file);
 }
+

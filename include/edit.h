@@ -3,9 +3,12 @@
 
 #include "utility.h"
 
-
 void deleteButton(Document* doc, Cursor* cursor);
+
 void enterButton(Document* doc, Cursor* cursor);
+
 void addSymbol(Document* doc, Cursor* cursor, char symb);
+
+void manageCursor(Document doc, Cursor* cursor);
 
 #endif

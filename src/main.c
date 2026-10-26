@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    Document doc;
+    Document doc = {0};
 
     readFile(file_name, &doc); //чтение файла и запись в массив
 
@@ -130,6 +130,5 @@ int main(int argc, char *argv[]) {
         perror("tcsetattr");
         return 1;
     }
-
     return 0;
 }
