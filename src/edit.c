@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h> 
+#include <unistd.h>
+#include <sys/ioctl.h>
 
 #include "edit.h"
 #include "utility.h"
+#include "print.h"
+
 
 void addSymbol(Document* doc, Cursor* cursor, char symb) {
     lineRealloc(doc, doc->lines[cursor->y].len + 1, cursor->y);
@@ -36,9 +39,7 @@ void addSymbol(Document* doc, Cursor* cursor, char symb) {
     printf("\x1b[K");
     printf("%s", doc->lines[cursor->y].line);
 
-    printf("\x1b[%ld;2H", doc->line_count + 7);
-    printf("%ld cap %ld len", doc->lines[cursor->y].capacity, doc->lines[cursor->y].len);
-    printf("\x1b[%ld;%ldH", cursor->y + 1, cursor->x + 1);
+    
 }
 
 void enterButton(Document* doc, Cursor* cursor) {
@@ -68,6 +69,8 @@ void enterButton(Document* doc, Cursor* cursor) {
         printf("\x1b[K");
         printf("%s", doc->lines[i].line);
     }
+    printf("\x1b[%zu;1H", doc->line_count + 1);
+    printf("\x1b[K");
     cursor->y++;
     cursor->x = 0;
 }
@@ -126,7 +129,7 @@ void deleteButton(Document* doc, Cursor* cursor) {
         printf("\x1b[K");
 }
 
-void manageCursor(Document doc, Cursor* cursor) {
+void manageCursor(Document doc, Cursor* cursor, struct winsize* ws, size_t* cur_max) {
     char symb;
     size_t n = read(STDIN_FILENO, &symb, 1);
     if (n == 1) {
@@ -150,4 +153,5 @@ void manageCursor(Document doc, Cursor* cursor) {
             }
         } 
     }
+    printFile(doc, ws, cursor->y, cur_max);
 }

@@ -3,12 +3,14 @@
 
 #include "utility.h"
 
+#include <sys/ioctl.h>
+
 void deleteButton(Document* doc, Cursor* cursor);
 
 void enterButton(Document* doc, Cursor* cursor);
 
 void addSymbol(Document* doc, Cursor* cursor, char symb);
 
-void manageCursor(Document doc, Cursor* cursor);
+void manageCursor(Document doc, Cursor* cursor, struct winsize* ws, size_t *cur_max);
 
 #endif

@@ -1,20 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 #include "edit.h"
 #include "file.h"
 #include "utility.h"
 #include "print.h"
 
-void mainCycle(Document* doc, char* file_name) {
+
+void mainCycle(Document* doc, char* file_name, struct winsize* ws) {
     Cursor cursor = {0,0};
+    size_t cur_max = ws->ws_row;
     char symb;
     while (symb != 17) {
         size_t n = read(STDIN_FILENO, &symb, 1);
 
         if (n == 1) {
             if (symb == 27) {
-                manageCursor(*doc, &cursor);
+                manageCursor(*doc, &cursor, ws, &cur_max);
             }
             else if (symb >= 32 && symb <= 126) {
                 addSymbol(doc, &cursor, symb);
@@ -45,6 +48,10 @@ int main(int argc, char *argv[]) {
     char* file_name = argv[1];
 
     struct termios original;
+    struct winsize ws;
+    
+
+    
 
     enableRawMode(&original); //переход на новый экран
 
@@ -52,12 +59,14 @@ int main(int argc, char *argv[]) {
 
     readFile(file_name, &doc); //чтение файла и запись в массив
 
-    printFile(doc); //начальный вывод всего файла
+    size_t ii = 27;
+    printFile(doc, &ws, 0, &ii); //начальный вывод всего файла
+    
 
     printf("\x1b[1;1H");
     fflush(stdout);
 
-    mainCycle(&doc, file_name); //главный цикл
+    mainCycle(&doc, file_name, &ws); //главный цикл
 
     printf("\x1b[?1049l"); // вернуться к обычному экрану
     fflush(stdout);
@@ -74,3 +83,5 @@ int main(int argc, char *argv[]) {
     
     return 0;
 }
+
+//make clean && make && ./build/tere test.txt

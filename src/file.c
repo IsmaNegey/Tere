@@ -8,7 +8,12 @@
 
 void readFile(char* file_name, Document* doc) {
 
-    int file = open(file_name, O_RDONLY);
+    int file = open(file_name, O_RDWR | O_CREAT, 0644);
+
+    if (file == -1) {
+        perror("open");
+        return;
+    }
 
     doc->capacity = 8;
     doc->lines = malloc(doc->capacity * sizeof(Line));

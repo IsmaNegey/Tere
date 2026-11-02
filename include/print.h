@@ -5,7 +5,11 @@
 #include <stddef.h>
 #include <termios.h>
 
-void printFile(Document doc);
+#include <sys/ioctl.h> //для размера терминала
+
+int getWinsize(struct winsize* ws);
+
+void printFile(Document doc, struct winsize *ws, size_t row_cursor, size_t *cur_max);
 
 int enableRawMode(struct termios *original);
 
